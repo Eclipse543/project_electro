@@ -1,0 +1,58 @@
+{% extends "electro/base.html" %}
+{% load static %}
+{% block title %}
+    <title>Contact</title>
+{% endblock title %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="newsletter">
+                    <p style="background-color:brown;>
+                        <a href="{% url 'index' %}" class="logo">
+                            <img src="{% static 'electro/img/logo.png' %}" alt=""/>
+                        </a>
+                    </p>
+                    <br/>
+                    <p>
+                        <a href="https://www.google.com/maps/place/%E0%A4%A8%E0%A4%AF%E0%A4%BE%E0%A4%81+%E0%A4%B8%E0%A4%A1%E0%A4%95,+Kathmandu+44600/@27.7033496,85.3115685,17z/data=!3m1!4b1!4m5!3m4!1s0x39eb18550c29af13:0x8efc346d0fd5e569!8m2!3d27.7033496!4d85.3115685"><i class="fa fa-map-marker"></i> New Road, KTM</a>
+                    </p>
+                    <p>
+                        <a href="https://www.gmail.com"><i class="fa fa-envelope-o"></i> electro@gmail.com</a>
+                    </p>
+                    <p>
+                        <a href="tel:021955184"><i class="fa fa-phone"></i> +021-95-51-84</a>
+                    </p>
+                    <h4 class="heading-4 font-weight-500 title">Contact Us</h4>
+                    <p class="paragraph-small sub-title">We are 24/7 open to hear from you.</p>
+                    <br/>
+                    <p>
+                        Sign Up for the <strong>NEWSLETTER</strong>
+                    </p>
+                    <form>
+                        <input class="input" type="email" placeholder="Enter Your Email"/>
+                        <button class="newsletter-btn">
+                            <i class="fa fa-envelope"></i> Subscribe
+                        </button>
+                    </form>
+                    <p>Follow Us:</p>
+                    <ul class="newsletter-follow">
+                        <li>
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+{% endblock content %}

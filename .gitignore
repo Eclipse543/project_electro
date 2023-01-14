@@ -1,0 +1,15 @@
+.vscode
+# Python
+*.pyc
+*~
+__pycache__
+
+# Env
+.env
+venv
+
+# Visual Studio
+.vscode
+.history/
+*.code-workspace
+.idea

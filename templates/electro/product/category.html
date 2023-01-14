@@ -1,0 +1,262 @@
+{% extends "electro/base.html" %}
+{% block title %}<title>Categories</title>{% endblock title %}
+{% block content %}
+<!-- SECTION TOPSELLING -->
+<div class="section">
+  <!-- container -->
+  <div class="container">
+    <!-- row -->
+    <div class="row">
+      <!-- section title -->
+      <div class="col-md-12">
+        <div class="section-title">
+          <h3 class="title">
+            Top selling
+          </h3>
+        </div>
+      </div>
+      <!-- /section title -->
+      <!-- Products tab & slick -->
+      <div class="col-md-12">
+        <div class="row">
+          <div class="products-tabs">
+            <!-- tab -->
+            <div id="tab2" class="tab-pane fade in active">
+              <div class="products-slick" data-nav="#slick-nav-2">
+                <!-- product -->
+                {% for ts in topselling %}
+                <div class="col-md-3">
+                  <div class="product">
+                    <div class="product-img">
+                      {% if ts.image %}
+                      <img src="{{ ts.image.url }}" alt="">
+                      {% endif %}
+                      <div class="product-label">
+                        {% if ts.discount_percent %}
+                        <span class="sale">{{ ts.discount_percent }}</span>
+                        {% endif %}
+                        {% if ts.status %}
+                        <span class="new">{{ ts.status }}</span>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="product-body">
+                      <p class="product-category">
+                        {{ ts.category }}
+                      </p>
+                      <h3 class="product-name">
+                        <a href="{% url 'product' ts.slug %}">{{ ts.title }}</a>
+                      </h3>
+                      <h4 class="product-price">
+                        ${{ ts.price }} <del class="product-old-prices">${{ ts.old_price }}</del>
+                      </h4>
+                      <div class="product-rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                      </div>
+                      <div class="add-to-order">
+                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i><a href="{% url 'add_to_order' ts.slug %}"> Order</a></button>
+                      </div>
+                    </div>
+                    <div class="add-to-cart">
+                      <button type="button" class="add-to-cart-btn">
+                        <i class="fa fa-shopping-cart"></i><a href="{% url 'add_to_cart' ts.slug %}"> add to cart</a>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                <!-- /product -->
+              </div>
+              <div id="slick-nav-2" class="products-slick-nav">
+              </div>
+            </div>
+            <!-- /tab -->
+          </div>
+        </div>
+      </div>
+      <!-- /Products tab & slick -->
+    </div>
+    <!-- /row -->
+  </div>
+  <!-- /container -->
+</div>
+<!-- /SECTION TOPSELLING-->
+<!-- SECTION NEW PRODUCTS -->
+<div class="section">
+  <!-- container -->
+  <div class="container">
+    <!-- row -->
+    <div class="row">
+      <!-- section title -->
+      <div class="col-md-12">
+        <div class="section-title">
+          <h3 class="title">
+            New Products
+          </h3>
+        </div>
+      </div>
+      <!-- /section title -->
+      <!-- Products tab & slick -->
+      <div class="col-md-12">
+        <div class="row">
+          <div class="products-tabs">
+            <!-- tab -->
+            <div id="tab2" class="tab-pane fade in active">
+              <div class="products-slick" data-nav="#slick-nav-2">
+                <!-- product -->
+                {% for np in newproducts %}
+                <div class="col-md-4">
+                  <div class="product">
+                    <div class="product-img" style="object-fit: cover;object-position:center;">
+                      {% if np.image %}
+                      <img src="{{ np.image.url }}" alt="">
+                      {% endif %}
+                      <div class="product-label">
+                        {% if np.discount_percent %}
+                        <span class="sale">{{ np.discount_percent }}</span>
+                        {% endif %}
+                        {% if np.status %}
+                        <span class="new">{{ np.status }}</span>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="product-body">
+                      <p class="product-category">
+                        {{ np.category }}
+                      </p>
+                      <h3 class="product-name">
+                        <a href="{% url 'product' np.slug %}">{{ np.title }}</a>
+                      </h3>
+                      <h4 class="product-price">
+                        ${{ np.price }} <del class="product-old-prices">${{ np.old_price }}</del>
+                      </h4>
+                      <div class="product-rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                      </div>
+                      <div class="add-to-order">
+                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i><a href="{% url 'add_to_order' np.slug %}"> Order</a></button>
+                      </div>
+                    </div>
+                    <div class="add-to-cart">
+                      <button type="button" class="add-to-cart-btn">
+                        <i class="fa fa-shopping-cart"></i><a href="{% url 'add_to_cart' np.slug %}"> add to cart</a>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                <!-- /product -->
+              </div>
+              <div id="slick-nav-2" class="products-slick-nav">
+              </div>
+            </div>
+            <!-- /tab -->
+          </div>
+        </div>
+      </div>
+      <!-- /Products tab & slick -->
+    </div>
+    <!-- /row -->
+  </div>
+  <!-- /container -->
+</div>
+<!-- /SECTION NEW PRODUCTS -->
+<!-- SECTION TRENDING -->
+<div class="section">
+  <!-- container -->
+  <div class="container">
+    <!-- row -->
+    <div class="row">
+      <div class="col-md-3 col-xs-6">
+        <div class="section-title">
+          <h4 class="title">
+            Trending
+          </h4>
+          <div class="section-nav">
+            <div id="slick-nav-3" class="products-slick-nav">
+            </div>
+          </div>
+        </div>
+        {% for tp in trendingproduct %}
+        <div class="products-widget-slick" data-nav="#slick-nav-3">
+          <!-- product widget -->
+          <div class="product-widget">
+            <div class="product-img">
+              {% if tp.image %}
+              <img src="{{ tp.image.url }}" alt="">
+              {% endif %}
+            </div>
+            <div class="product-body">
+              <p class="product-category">{{ tp.category }}</p>
+              <h3 class="product-name">
+                <a href="#">{{ tp.title }}</a>
+              </h3>
+              <h4 class="product-price">
+                {{ tp.price }}<del class="product-old-price">{{ tp.old_price }}</del>
+              </h4>
+            </div>
+          </div>
+          <!-- /product widget -->
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="clearfix visible-sm visible-xs">
+  </div>
+</div>
+</div>
+</div>
+</div>
+<!-- /row -->
+</div>
+<!-- /container -->
+<!-- /SECTION -->
+<!-- NEWSLETTER -->
+<div id="newsletter" class="section">
+  <!-- container -->
+  <div class="container">
+    <!-- row -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="newsletter">
+          <p>
+            Sign Up for the <strong>NEWSLETTER</strong>
+          </p>
+          <form>
+            <input class="input" type="email" placeholder="Enter Your Email">
+            <button class="newsletter-btn">
+              <i class="fa fa-envelope"></i> Subscribe
+            </button>
+          </form>
+          <ul class="newsletter-follow">
+            <li>
+              <a href="#"><i class="fa fa-facebook"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="fa fa-twitter"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="fa fa-instagram"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="fa fa-pinterest"></i></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /row -->
+  </div>
+  <!-- /container -->
+</div>
+<!-- /NEWSLETTER -->
+{% endblock content %}

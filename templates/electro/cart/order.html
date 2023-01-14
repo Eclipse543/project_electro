@@ -1,0 +1,71 @@
+{% extends "electro/base.html" %}
+{% block title %}
+<title>cart</title>
+{% endblock title %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                {% for order in order_details %}
+                <div class="col-md-3">
+                    <!-- product -->
+                    <div class="product">
+                        <div class="product-img">
+                            {% if order.np.image %}
+                            <img src="{{ order.np.image.url }}" alt="" />
+                            {% endif %}
+                            <div class="product-label">
+                                {% if order.np.discount_percent %}
+                                <span class="sale">{{ order.np.discount_percent }}</span>
+                                {% endif %}
+                                {% if cart.np.status %}
+                                <span class="new">{{ order.np.status }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="product-body">
+                            <p class="product-category">{{ order.np.category }}</p>
+                            <h3 class="product-name">
+                                <a href="{% url 'product' order.np.slug %}">{{ order.np.title }}</a>
+                            </h3>
+                            <h4 class="product-price">${{ order.np.price }} <del class="product-old-price">{{ order.np.old_price }}</del>
+                            </h4>
+                            <div class="product-rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="add-to-order">
+                                <button class="add-to-cart-btn">
+                                    <a href="{% url 'cancel' order.np.slug %}" onclick="return confirm('Are you sure you want to cancel this item?');"><i class=""></i>
+                                        <span class="tooltipp">Cancel</span></a>
+                                </button>
+                            </div>
+                        </div>
+                        <div class=" add-to-cart">
+                            <button type="button" class="add-to-cart-btn">
+                                <i class="fa fa-shopping-cart"></i><a href="{% url 'checkout' %}"> Checkout</a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
