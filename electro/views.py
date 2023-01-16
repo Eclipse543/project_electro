@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.contrib import messages
-
+from django.db.models import Sum
 from electro.models import Category, Customer, Products, Collection, Order, Cart
 
 
@@ -17,8 +17,17 @@ def index(request):
     return render(request, "electro/index.html", data)
 
 
-def category(request, slug):
-    return render(request, 'electro/product/category.html')
+def category(request, cat_slug):
+    cat = Category.objects.get(cat_slug=cat_slug)
+    products_ts = Products.objects.filter(category=cat, item_type='ts')
+    products_np = Products.objects.filter(category=cat, item_type='np')
+    products_tp = Products.objects.filter(category=cat, item_type='tp')
+    context = {
+        'products_ts': products_ts,
+        'products_np': products_np,
+        'products_tp': products_tp,
+    }
+    return render(request, 'electro/product/category.html', context)
 
 
 def product(request, slug):
@@ -28,14 +37,21 @@ def product(request, slug):
     page_obj = paginator.get_page(page_number)
     data = {
         "details": Products.objects.get(slug=slug),
-        "relatedproduct": page_obj
+        "relatedproduct": page_obj,
 
     }
     return render(request, "electro/product/product.html", data)
 
 
 def shop(request):
-    return render(request, "electro/store.html")
+    contact_list = Products.objects.all()
+    paginator = Paginator(contact_list, 9)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    data = {
+        "prod": page_obj,
+    }
+    return render(request, "electro/store.html", data)
 
 
 def myaccount(request):
@@ -47,12 +63,18 @@ def register(request):
 
 
 def data_pass(request):
+    total_qty1 = Order.objects.aggregate(total_qty=Sum('qty'))['total_qty']
+    total_qty = Cart.objects.aggregate(total_qty=Sum('qty'))['total_qty']
     data = {
-        "category": Category.objects.all(),
+        "categories": Category.objects.all(),
+        "products": Products.objects.all(),
         "newproducts": Products.objects.filter(item_type='np'),
         "topselling": Products.objects.filter(item_type='ts'),
         "trendingproduct": Products.objects.filter(item_type='tp'),
         "cart_details": Cart.objects.all(),
+        'total_qty1': total_qty,
+        'total_qty': total_qty,
+
 
     }
     return data
@@ -76,9 +98,14 @@ def add_to_cart(request, slug):
 
 
 def cart(request):
-    data = {"cart_details": Cart.objects.order_by("-id")}
+    cart_items = Cart.objects.all()
+    total_qty = Cart.objects.aggregate(total_qty=Sum('qty'))['total_qty']
+    data = {
+        "cart_details": Cart.objects.order_by("-id"),
+        'cart_items': cart_items,
+        'total_qty': total_qty,
+    }
     return render(request, "electro/cart/cart.html", data)
-
 
 
 def add_to_order(request, slug):
@@ -109,8 +136,12 @@ def cart_to_order(request, slug):
 
 
 def order(request):
+    order_items = Cart.objects.all()
+    total_qty = Order.objects.aggregate(total_qty=Sum('qty'))['total_qty']
     data = {
-        "order_details": Order.objects.order_by("-id")
+        "order_details": Order.objects.order_by("-id"),
+        'order_items': order_items,
+        'total_qty1': total_qty,
     }
     return render(request, 'electro/cart/order.html', data)
 
@@ -118,15 +149,11 @@ def order(request):
 def checkout(request):
     address = Customer.objects.all()
     order_items = Order.objects.all()
-    amount = 0.0
-    shipping_amount = 65.0
-    order_product = [p for p in Order.objects.all()]
-    if order_product:
-        for p in order_product:
-            calculate = (p.qty * p.np.price)
-            amount += calculate
-        totalamount = amount + shipping_amount
+    shipping_amount = 65
+    totalamount = sum(item.qty * item.np.price for item in order_items) + shipping_amount
     return render(request, "electro/checkout.html", {'address': address, 'order_items':order_items, 'totalamount': totalamount})
+
+
 
 def remove(request, slug):
     np = Products.objects.get(slug=slug)
@@ -136,6 +163,7 @@ def remove(request, slug):
     back = request.META['HTTP_REFERER']
     messages.success(request, 'Successfully removed from cart')
     return redirect(back)
+
 
 
 def cancel(request, slug):

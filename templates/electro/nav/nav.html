@@ -12,9 +12,9 @@
         <li>
           <a href="{% url 'shop' %}">Hot Deals</a>
         </li>
-        {% for cat in category %}
+        {% for cat in categories %}
         <li>
-          <a href="{% url 'category' cat.slug %}">{{ cat.name }}</a>
+          <a href="{% url 'category' cat.cat_slug %}">{{ cat.name }}</a>
         </li>
         {% endfor %}
       </ul>

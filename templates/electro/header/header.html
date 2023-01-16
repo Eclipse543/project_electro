@@ -49,9 +49,9 @@
                 <option value="0">
                   All Categories
                 </option>
-                {% for cat in category %}
+                {% for cat in categories %}
                 <option value="1">
-                  <a href="{% url 'category' cat.slug %}">{{ cat.name }}</a>
+                  <a href="{% url 'category' cat.cat_slug %}">{{ cat.name }}</a>
                 </option>
                 {% endfor %}
               </select>
@@ -64,22 +64,22 @@
         <!-- ACCOUNT -->
         <div class="col-md-3 clearfix">
           <div class="header-ctn">
-            <!-- Wishlist -->
+            <!-- Your Order -->
             <div>
               <a href="{% url 'order' %}">
                 <i class="fa fa-heart-o"></i>
                 <span>Your Order</span>
-                <div class="qty">2</div>
+                <div class="qty">{{ total_qty }}</div>
               </a>
             </div>
-            <!-- /Wishlist -->
+            <!-- /Your Order -->
             <!-- Cart -->
             <div class="dropdown">
               <a href="{% url 'cart' %}" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                 <i class="fa fa-shopping-cart"></i>
                 <span>Your Cart</span>
                 <div id="cart-qty" class="qty">
-                  4
+                  {{ total_qty }}
                 </div>
               </a>
               <div class="cart-dropdown">

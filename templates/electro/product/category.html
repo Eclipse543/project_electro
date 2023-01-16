@@ -24,7 +24,7 @@
             <div id="tab2" class="tab-pane fade in active">
               <div class="products-slick" data-nav="#slick-nav-2">
                 <!-- product -->
-                {% for ts in topselling %}
+                {% for ts in products_ts %}
                 <div class="col-md-3">
                   <div class="product">
                     <div class="product-img">
@@ -108,8 +108,8 @@
             <div id="tab2" class="tab-pane fade in active">
               <div class="products-slick" data-nav="#slick-nav-2">
                 <!-- product -->
-                {% for np in newproducts %}
-                <div class="col-md-4">
+                {% for np in products_np %}
+                <div class="col-md-3">
                   <div class="product">
                     <div class="product-img" style="object-fit: cover;object-position:center;">
                       {% if np.image %}
@@ -173,50 +173,55 @@
 <div class="section">
   <!-- container -->
   <div class="container">
-    <!-- row -->
-    <div class="row">
-      <div class="col-md-3 col-xs-6">
-        <div class="section-title">
-          <h4 class="title">
-            Trending
-          </h4>
-          <div class="section-nav">
-            <div id="slick-nav-3" class="products-slick-nav">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-3 col-xs-6">
+          <div class="section-title">
+            <h4 class="title">
+              Trending
+            </h4>
+            <div class="section-nav">
+              <div id="slick-nav-3" class="products-slick-nav">
+              </div>
             </div>
           </div>
         </div>
-        {% for tp in trendingproduct %}
-        <div class="products-widget-slick" data-nav="#slick-nav-3">
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class=" row">
+        {% for tp in products_tp %}
+        <div class=" products-widget-slick" data-nav="#slick-nav-3">
           <!-- product widget -->
-          <div class="product-widget">
-            <div class="product-img">
-              {% if tp.image %}
-              <img src="{{ tp.image.url }}" alt="">
-              {% endif %}
+          <div class="col-md-3">
+            <div class="product-widget">
+              <div class="product-img">
+                {% if tp.image %}
+                <img src="{{ tp.image.url }}" alt="">
+                {% endif %}
+              </div>
+              <div class="product-body">
+                <p class="product-category">{{ tp.category }}</p>
+                <h3 class="product-name">
+                  <a href="{% url 'product' tp.slug %}">{{ tp.title }}</a>
+                </h3>
+                <h4 class="product-price">
+                  {{ tp.price }}<del class="product-old-price">{{ tp.old_price }}</del>
+                  {% if tp.discount_percent %}
+                  <span class="sale">{{ tp.discount_percent }}</span>
+                  {% endif %}
+                </h4>
+              </div>
             </div>
-            <div class="product-body">
-              <p class="product-category">{{ tp.category }}</p>
-              <h3 class="product-name">
-                <a href="#">{{ tp.title }}</a>
-              </h3>
-              <h4 class="product-price">
-                {{ tp.price }}<del class="product-old-price">{{ tp.old_price }}</del>
-              </h4>
-            </div>
+            <!-- /product widget -->
           </div>
-          <!-- /product widget -->
         </div>
         {% endfor %}
       </div>
     </div>
+    <div class="clearfix visible-sm visible-xs">
+    </div>
   </div>
-  <div class="clearfix visible-sm visible-xs">
-  </div>
-</div>
-</div>
-</div>
-</div>
-<!-- /row -->
 </div>
 <!-- /container -->
 <!-- /SECTION -->
