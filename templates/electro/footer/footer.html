@@ -12,13 +12,13 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut.</p>
             <ul class="footer-links">
               <li>
-                <a href="#"><i class="fa fa-map-marker"></i>New Road, KTM</a>
+                <a href="https://www.google.com/maps/place/%E0%A4%A8%E0%A4%AF%E0%A4%BE%E0%A4%81+%E0%A4%B8%E0%A4%A1%E0%A4%95,+Kathmandu+44600/@27.7033496,85.3115685,17z/data=!3m1!4b1!4m5!3m4!1s0x39eb18550c29af13:0x8efc346d0fd5e569!8m2!3d27.7033496!4d85.3115685"><i class="fa fa-map-marker"></i>New Road, KTM</a>
               </li>
               <li>
-                <a href="#"><i class="fa fa-phone"></i>+021-95-51-84</a>
+                <a href="tel:021955184"><i class="fa fa-phone"></i>+021-95-51-84</a>
               </li>
               <li>
-                <a href="#"><i class="fa fa-envelope-o"></i>electro@gmail.com</a>
+                <a href="https://www.gmail.com"><i class="fa fa-envelope-o"></i>electro@gmail.com</a>
               </li>
             </ul>
           </div>
@@ -28,11 +28,11 @@
             <h3 class="footer-title">Categories</h3>
             <ul class="footer-links">
               <li>
-                <a href="#">Hot deals</a>
+                <a href="{% url 'shop' %}">Hot deals</a>
               </li>
-              {% for cat in category %}
+              {% for cat in categories %}
               <li>
-                <a href="#">{{ cat.name }}</a>
+                <a href="{% url 'category' cat.cat_slug %}">{{ cat.name }}</a>
               </li>
               {% endfor %}
             </ul>
@@ -69,10 +69,10 @@
                 <a href="#">My Account</a>
               </li>
               <li>
-                <a href="#">View Cart</a>
+                <a href="{% url 'cart' %}">View Cart</a>
               </li>
               <li>
-                <a href="#">Wishlist</a>
+                <a href="{% url 'order' %}">Orderlist</a>
               </li>
               <li>
                 <a href="#">Track My Order</a>

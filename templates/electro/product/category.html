@@ -29,7 +29,7 @@
                   <div class="product">
                     <div class="product-img">
                       {% if ts.image %}
-                      <img src="{{ ts.image.url }}" alt="">
+                      <img src="{{ ts.image.url }}" alt=""/>
                       {% endif %}
                       <div class="product-label">
                         {% if ts.discount_percent %}
@@ -113,7 +113,7 @@
                   <div class="product">
                     <div class="product-img" style="object-fit: cover;object-position:center;">
                       {% if np.image %}
-                      <img src="{{ np.image.url }}" alt="">
+                      <img src="{{ np.image.url }}" alt=""/>
                       {% endif %}
                       <div class="product-label">
                         {% if np.discount_percent %}
@@ -197,7 +197,7 @@
             <div class="product-widget">
               <div class="product-img">
                 {% if tp.image %}
-                <img src="{{ tp.image.url }}" alt="">
+                <img src="{{ tp.image.url }}" alt=""/>
                 {% endif %}
               </div>
               <div class="product-body">
@@ -237,7 +237,7 @@
             Sign Up for the <strong>NEWSLETTER</strong>
           </p>
           <form>
-            <input class="input" type="email" placeholder="Enter Your Email">
+            <input class="input" type="email" placeholder="Enter Your Email"/>
             <button class="newsletter-btn">
               <i class="fa fa-envelope"></i> Subscribe
             </button>

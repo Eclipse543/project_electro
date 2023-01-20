@@ -38,7 +38,6 @@ def product(request, slug):
     data = {
         "details": Products.objects.get(slug=slug),
         "relatedproduct": page_obj,
-
     }
     return render(request, "electro/product/product.html", data)
 
@@ -72,7 +71,7 @@ def data_pass(request):
         "topselling": Products.objects.filter(item_type='ts'),
         "trendingproduct": Products.objects.filter(item_type='tp'),
         "cart_details": Cart.objects.all(),
-        'total_qty1': total_qty,
+        'total_qty1': total_qty1,
         'total_qty': total_qty,
 
 
@@ -137,11 +136,11 @@ def cart_to_order(request, slug):
 
 def order(request):
     order_items = Cart.objects.all()
-    total_qty = Order.objects.aggregate(total_qty=Sum('qty'))['total_qty']
+    total_qty1 = Order.objects.aggregate(total_qty=Sum('qty'))['total_qty']
     data = {
         "order_details": Order.objects.order_by("-id"),
         'order_items': order_items,
-        'total_qty1': total_qty,
+        'total_qty1': total_qty1,
     }
     return render(request, 'electro/cart/order.html', data)
 
@@ -154,22 +153,20 @@ def checkout(request):
     return render(request, "electro/checkout.html", {'address': address, 'order_items':order_items, 'totalamount': totalamount})
 
 
-
 def remove(request, slug):
     np = Products.objects.get(slug=slug)
-    cart_product = Cart.objects.get(np=np)
-    if cart_product:
+    cart_product = Cart.objects.filter(np=np)
+    for cart_product in cart_product:
         cart_product.delete()
     back = request.META['HTTP_REFERER']
     messages.success(request, 'Successfully removed from cart')
     return redirect(back)
 
 
-
 def cancel(request, slug):
     np = Products.objects.get(slug=slug)
-    order_product = Order.objects.get(np=np)
-    if order_product:
+    order_products = Order.objects.filter(np=np)
+    for order_product in order_products:
         order_product.delete()
     back = request.META['HTTP_REFERER']
     messages.success(request, 'Your order has been cancelled')
