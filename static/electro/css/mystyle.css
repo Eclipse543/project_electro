@@ -1,8 +1,4 @@
-.product-img {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    /* this will crop the image to fit within the container */
-    object-position: center;
-    /* this will center the image within the container */
-}
+/*.product .product-body .product-name {
+    text-transform: uppercase;
+    font-size: 12px;
+}*/

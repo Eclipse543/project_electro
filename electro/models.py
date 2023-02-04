@@ -1,6 +1,8 @@
 
 from ckeditor.fields import RichTextField
 from django.db import models
+from django.contrib.auth.models import User
+
 
 
 class Category(models.Model):
@@ -43,6 +45,7 @@ class Products(models.Model):
     discount_percent = models.CharField(max_length=50, null=True, blank=True)
     status = models.CharField(choices=status_field, max_length=50, null=True, blank=True)
 
+
     class Meta:
         verbose_name_plural = "Products"
 
@@ -50,16 +53,9 @@ class Products(models.Model):
         return self.title
 
 
-class Customer(models.Model):
-    name = models.CharField(max_length=200)
-    email = models.EmailField(unique=True)
-    address = models.CharField(max_length=200)
-    city = models.CharField(max_length=200)
-    locality = models.CharField(max_length=200)
-
-
 class Cart(models.Model):
     np = models.ForeignKey(Products, on_delete=models.CASCADE)
+    customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     qty = models.IntegerField(default=1)
     color = models.CharField(max_length=50, null=True)
 
@@ -69,8 +65,12 @@ class Cart(models.Model):
 
 class Order(models.Model):
     np = models.ForeignKey(Products, on_delete=models.CASCADE)
+    customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     qty = models.IntegerField(default=1)
     order_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.np)
+
+
+

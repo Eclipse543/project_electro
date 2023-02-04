@@ -1,0 +1,8 @@
+{% extends "electro/base.html" %}
+{% block title %} <title>Cancel</title> {% endblock title%}
+{% block content %}
+<div class="alert alert-info" role="alert">
+  Forgot to add something to your cart?
+  <a class="btn btn-primary " href="{% url 'index' %}">Go to Products</a>
+</div>
+{% endblock content %}

@@ -2,6 +2,7 @@
 {% block title %}
 <title>Checkout</title>
 {% endblock title %}
+{% block script %} <script src="https://js.stripe.com/v3/"></script> {% endblock script%}
 {% block content %}
 <!-- BREADCRUMB -->
 <div id="breadcrumb" class="section">
@@ -32,6 +33,7 @@
         <div class="row">
             <div class="col-md-7">
                 <!-- Shiping Details -->
+                {% if user.is_authenticated %}
                 <div class="billing-details">
                     <div class="section-title">
                         <h3 class="title">Shipping address</h3>
@@ -40,28 +42,25 @@
                         {% for add in address %}
                         <div class="form-group">
                             <label for="name">Full Name</label>
-                            <input class="input" type="text" name="name" placeholder="full name" value="{{ add.name }}" />
+                            <input class="input" type="text" name="name" placeholder="full name" value="{{ add.username }}" />
                         </div>
                         <div class="form-group">
-                            <label for="name">Email</label>
+                            <label for="email">Email</label>
                             <input class="input" type="email" name="email" value="{{ add.email }}" />
                         </div>
                         <div class="form-group">
-                            <label for="name">Address</label>
+                            <label for="address">Address</label>
                             <input class="input" type="text" name="address" value="{{ add.address }}" />
                         </div>
                         <div class="form-group">
-                            <label for="name">City</label>
-                            <input class="input" type="text" name="city" value="{{ add.city }}" />
-                        </div>
-                        <div class="form-group">
-                            <label for="name">Locality</label>
-                            <input class="input" type="text" name="country" value="{{ add.locality }}" />
+                            <label for="phone">Phone</label>
+                            <input class="input" type="int" name="phone" value="{{ add.phone }}" />
                         </div>
                         {% endfor %}
                     </form>
                 </div>
                 <!-- /Shiping Details -->
+                {% endif %}
                 <!-- Shiping Details -->
                 <div class="shiping-details">
                     <div class="section-title">
@@ -111,6 +110,7 @@
                 <!-- /Order notes -->
             </div>
             <!-- Order Details -->
+            {% if user.is_authenticated %}
             <div class="col-md-5 order-details">
                 <div class="section-title text-center">
                     <h3 class="title">Your Order</h3>
@@ -151,7 +151,7 @@
                 </div>
                 <div class="payment-method">
                     <h3>PAYMENT</h3>
-                    <div class="input-radio">
+                    <!--<div class="input-radio">
                         <input type="radio" name="payment" id="payment-1" />
                         <label for="payment-1">
                             <span></span>
@@ -162,7 +162,7 @@
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                             </p>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="input-radio">
                         <input type="radio" name="payment" id="payment-1" />
                         <label for="payment-1">
@@ -183,9 +183,16 @@
                         I've read and accept the <a href="#">terms & conditions</a>
                     </label>
                 </div>
-                <a href="" class="primary-btn order-submit">Place order</a>
+                {% for item in order_items %}
+                <form action="{% url 'create-checkout-session' item.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="primary-btn order-submit" id="checkout-button">Checkout</button>
+                </form>
+                {% endfor %}
+                <!-- <a href="" class="primary-btn order-submit">Checkout</a> -->
             </div>
             <!-- /Order Details -->
+            {% endif %}
         </div>
         <!-- /row -->
     </div>

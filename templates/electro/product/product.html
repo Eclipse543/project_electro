@@ -55,18 +55,24 @@
 			<!-- Product thumb imgs -->
 			<div class="col-md-2  col-md-pull-5">
 				<div id="product-imgs" class="slick-initialized slick-slider"><button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="display: block;">Previous</button>
-					<div class="product-preview">
-						{% if details.image %}
-						<img src="{{ details.image.url }}" alt=""/>
-						{% endif %}
-					</div>
-					<div class="product-preview">
-						{% if details.image %}
-						<img src="{{ details.image.url }}" alt=""/>
-						{% endif %}
-					</div>
-					<div class="product-preview">
-						<img src="{{ details.image.url }}" alt=""/>
+					<div class="slick-list draggable">
+						<div class="slick-track">
+							<div class="product-preview slick-slide">
+								{% if details.image %}
+								<img role="presentation" src="{{ details.image.url }}" alt="" />
+								{% endif %}
+							</div>
+							<div class="product-preview slick-slide">
+								{% if details.image %}
+								<img role="presentation" src="{{ details.image.url }}" alt="" />
+								{% endif %}
+							</div>
+							<div class="product-preview slick-slide">
+								{% if details.image %}
+								<img role="presentation" src="{{ details.image.url }}" alt="" />
+								{% endif %}
+							</div>
+						</div>
 					</div>
 					<button class="slick-next slick-arrow" aria-label="Next" type="button" style="display: block;">Next</button>
 				</div>

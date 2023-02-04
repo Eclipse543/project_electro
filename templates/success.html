@@ -1,0 +1,8 @@
+{% extends "electro/base.html" %}
+{% block title %} <title>Success</title> {% endblock title%}
+{% block content %}
+<div class="alert alert-success" role="alert">
+  Thanks for purchasing our product.
+  <a class="btn btn-primary" href="{% url 'index' %}"> Go to Products</a>
+</div>
+{% endblock content %}

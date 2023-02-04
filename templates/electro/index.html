@@ -55,7 +55,7 @@
                   <div class="product">
                     <div class="product-img">
                       {% if np.image %}
-                      <img src="{{ np.image.url }}" alt="" />
+                      <img srcset="{{ np.image.url }}" alt="">
                       {% endif %}
                       <div class="product-label">
                         {% if np.discount_percent %}

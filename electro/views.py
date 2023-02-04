@@ -2,7 +2,11 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.db.models import Sum
-from electro.models import Category, Customer, Products, Collection, Order, Cart
+from electro.models import Category, Products, Collection, Order, Cart
+from .forms import CustomerRegistrationForm
+from django.views import View
+from django.contrib.auth.models import User
+
 
 
 def index(request):
@@ -135,7 +139,7 @@ def cart_to_order(request, slug):
 
 
 def order(request):
-    order_items = Cart.objects.all()
+    order_items = Order.objects.all()
     total_qty1 = Order.objects.aggregate(total_qty=Sum('qty'))['total_qty']
     data = {
         "order_details": Order.objects.order_by("-id"),
@@ -146,11 +150,11 @@ def order(request):
 
 
 def checkout(request):
-    address = Customer.objects.all()
+    address = User.objects.all()
     order_items = Order.objects.all()
     shipping_amount = 65
     totalamount = sum(item.qty * item.np.price for item in order_items) + shipping_amount
-    return render(request, "electro/checkout.html", {'address': address, 'order_items':order_items, 'totalamount': totalamount})
+    return render(request, "electro/checkout.html", {'address':address, 'order_items':order_items, 'totalamount': totalamount})
 
 
 def remove(request, slug):
@@ -171,3 +175,63 @@ def cancel(request, slug):
     back = request.META['HTTP_REFERER']
     messages.success(request, 'Your order has been cancelled')
     return redirect(back)
+
+
+def register(request):
+    if request.method == 'POST':
+        form = CustomerRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
+            password1 = form.cleaned_data.get('password1')
+            password2 = form.cleaned_data.get('password2')
+            messages.success(request, f'Your account has been created ! You are now able to log in')
+            return redirect('login')
+    else:
+        form = CustomerRegistrationForm()
+    return render(request, 'registration/register.html', {'form': form})
+
+
+import os
+import stripe
+from django.conf import settings 
+from django.shortcuts import HttpResponseRedirect
+from django.shortcuts import HttpResponse
+
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+
+YOUR_DOMAIN = 'http://127.0.0.1:8000/'
+
+def success(request):
+    return render(request, 'success.html')
+
+def cancel(request):
+    return render(request, 'cancel.html')
+
+def create_checkout_session(request, pk):
+    try:
+        order = Order.objects.get(id=pk)
+        checkout_session = stripe.checkout.Session.create(
+            line_items=[
+                {
+                    'price_data': {
+                        "currency": "usd",
+                        "unit_amount": int(order.np.price)*100,
+                        "product_data":{
+                            "name": order.np.title,
+                        },
+                    },
+                    'quantity': 1,
+                },
+            ],
+            mode='payment',
+            success_url='http://127.0.0.1:8000/success/',
+            cancel_url='http://127.0.0.1:8000/cancel/',
+        )
+    except Exception as e:
+        return HttpResponse(str(e))
+
+    return HttpResponseRedirect(checkout_session.url)

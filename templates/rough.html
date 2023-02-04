@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% block title %}
+<title>Login</title>
+{% endblock title %}
+{% block content %}
+{% if messages %}
+<div class="messages-container">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+<div class="container">
+    <form action="{% url 'login' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me">
+            <label class="form-check-label" for="remember_me">Remember me</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign in</button>
+        <a href="{% url 'password_reset' %}" class="btn btn-link">Forgot password? </a>
+    </form>
+</div>
+<div class="checkbox mb-3">
+    <label>
+        <input type="checkbox" value="remember-me" />
+        Remember me
+    </label>
+</div>
+def register(request):
+if request.method == 'POST':
+form = UserCreationForm(request.POST)
+if form.is_valid():
+user = form.save()
+auth_login(request, user)
+return redirect('home')
+else:
+form = UserCreationForm()
+return render(request, 'registration/register.html', {'form': form})
+def login(request):
+if request.method == 'POST':
+form = AuthenticationForm(request, request.POST)
+if form.is_valid():
+auth_login(request, form.get_user())
+return redirect('home')
+else:
+form = AuthenticationForm()
+# def login(request):
+# if request.method == 'POST':
+# email = request.POST.get('email')
+# password = request.POST.get('password')
+# try:
+# user = UserAccount.objects.get(email=email)
+# except UserAccount.DoesNotExist:
+# messages.error(request, 'User with this email does not exist')
+# return redirect('login')
+# if user.check_password(password):
+# login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+# request.session.set_expiry(None) # session does not expire
+# return redirect('/')
+# else:
+# messages.error(request, 'Invalid email or password')
+# return redirect('login')
+# return render(request, 'registration/login.html')
+<!-- <div class="form-group">
+          <br />
+          <label for="inputName" class="form-label">Name</label>
+          <input type="text" class="form-control" id="inputName" name="name" placeholder="Enter Your Name" />
+        </div>
+        <div class="form-group">
+          <label for="inputEmail" class="form-label">Email</label>
+          <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Enter Your Email Address" />
+        </div>
+        <div class="form-group">
+          <label for="inputAddress" class="form-label">Address</label>
+          <input type="text" class="form-control" id="inputAddress" name="address" placeholder="" />
+        </div>
+        <div class="form-group">
+          <label for="inputPhone" class="form-label">Phone</label>
+          <input type="int" class="form-control" id="inputPhone" name="phone" />
+        </div>
+        <div class="form-group">
+          <label for="inputPassword" class="form-label">Password</label>
+          <input type="password" class="form-control" id="inputPassword" name="password" />
+        </div>
+        <br />
+        <div class="col-12 mt-6">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        <br /> -->
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+{% if next %}
+{% if user.is_authenticated %}
+<p>Your account doesn't have access to this page. To proceed,
+    pleasenlogin with an account that has access</p>
+{% else %}
+<p>Please login to see this page.</p>
+{% endif %}
+{% endif %}
+/*.product-img {
+width: 200px;
+height: 200px;
+object-fit: cover;
+/* this will crop the image to fit within the container */
+object-position: center;
+/* this will center the image within the container */
+}
+*/
+from PIL import Image
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from django.http import HttpResponse
+def resize_image(request, image_path, width, height):
+# Open the image file
+image = default_storage.open(image_path, 'rb')
+# Resize the image
+image = Image.open(image)
+image = image.resize((width, height))
+# Save the resized image
+temp_handle = BytesIO()
+image.save(temp_handle, 'JPEG')
+temp_handle.seek(0)
+# Return the resized image
+response = HttpResponse(temp_handle, content_type="image/jpeg")
+return response
+<img src="{% url 'resize_image' image_path width height %}" alt="Resized image" />
+stripe
+stipe.api_key = settings.STRIPE_SECRET_KEY
+class CreateCheckoutSessionView(View):
+def post(self, request, *args,**kwargs):
+YOUR_DOMAIN = "https://127.0.0.1:8000"
+checkout_session = stripe.checkout.Session.create(
+payment_method_types=['card'],
+line_items=[
+{
+'price_data': {
+'currency':'usd',
+'product_data': {
+'name': '',
+}
+}
+'quantity': 1,
+},
+],
+mode='payment',
+success_url=YOUR_DOMAIN + '/success/',
+cancel_url=YOUR_DOMAIN + '/cancel/',
+)
+return JsonResponse({
+checkout_session.url, code=303
+})
+# from .forms import LoginForm
+# from django.contrib.auth.models import User
+# def login(request):
+# if request.method == 'GET':
+# form1 = LoginForm(request.get)
+# return render(request, 'registration/login.html', {'form1': form1})
+# from django.contrib.auth import views as auth_views
+# path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+# path('login/', auth_views.LoginView.as_view(), name='login'),

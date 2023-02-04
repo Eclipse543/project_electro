@@ -9,9 +9,6 @@
         <li class="active">
           <a href="{% url 'index' %}">Home</a>
         </li>
-        <li>
-          <a href="{% url 'shop' %}">Hot Deals</a>
-        </li>
         {% for cat in categories %}
         <li>
           <a href="{% url 'category' cat.cat_slug %}">{{ cat.name }}</a>
